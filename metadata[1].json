@@ -1,0 +1,6 @@
+{
+  "name": "AML Investigation Workbench",
+  "description": "AI-Assisted Financial Crime Investigation Platform for AML risk analytics, alert triaging, transaction network forensics, and verifiable evidence-grounded investigations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

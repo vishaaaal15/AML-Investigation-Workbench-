@@ -1,0 +1,16 @@
+# ==============================================================================
+# AML Investigation Workbench - Environment Configuration Template
+# Copy this file to '.env' and populate with your own credentials.
+# Do NOT commit '.env' to version control.
+# ==============================================================================
+
+# Server Port (default: 3000)
+PORT=3000
+
+# Google Gemini API Key: Required for server-side AI investigation runs.
+# In local development: generate a key from https://aistudio.google.com/
+# In Google AI Studio: automatically configured via Settings > Secrets.
+GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE"
+
+# Application URL (optional in local development, defaults to http://localhost:3000)
+APP_URL="http://localhost:3000"
