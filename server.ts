@@ -3,13 +3,13 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import { db } from './server/db/store';
+import { db } from './server/store.ts';
 import {
   GeminiInvestigationService,
   getGeminiConfigStatus
-} from './server/services/gemini';
-import { runComprehensiveEvaluations } from './server/services/evaluations';
-import { generateCasePdf } from './server/services/pdf';
+} from './Services/gemini.ts';
+import { runComprehensiveEvaluations } from './Services/evaluations.ts';
+import { generateCasePdf } from './Services/pdf.ts';
 
 dotenv.config();
 

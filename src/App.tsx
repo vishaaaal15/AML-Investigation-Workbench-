@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Header } from './components/Header';
-import { Sidebar, NavTab } from './components/Sidebar';
-import { EvidenceModal } from './components/EvidenceModal';
-import { ReseedModal } from './components/ReseedModal';
-import { OverviewView } from './views/OverviewView';
-import { AlertQueueView } from './views/AlertQueueView';
-import { CasesView } from './views/CasesView';
-import { CaseWorkspaceView } from './views/CaseWorkspaceView';
-import { NetworkGraphView } from './views/NetworkGraphView';
-import { EvaluationView } from './views/EvaluationView';
-import { MethodologyView } from './views/MethodologyView';
+import { Header } from "../Components/Header";
+import { Sidebar } from "../Components/Sidebar";
+import { EvidenceModal } from "../Components/EvidenceModal";
+import { ReseedModal } from "../Components/ReseedModal";
 
+import { OverviewView } from "../View/OverviewView";
+import { AlertQueueView } from "../View/AlertQueueView";
+import { CasesView } from "../View/CasesView";
+import { CaseWorkspaceView } from "../View/CaseWorkspaceView";
+import { EvaluationView } from "../View/EvaluationView";
+import { MethodologyView } from "../View/MethodologyView";
+import { NetworkGraphView } from "../View/NetworkGraphView";
 export default function App() {
   const [currentTab, setCurrentTab] = useState<NavTab>('overview');
   const [activeCaseId, setActiveCaseId] = useState<string>('CASE-001');

@@ -1,4 +1,4 @@
-import { db } from '../db/store';
+import { db } from '../server/store.ts';
 import { EvidenceItem } from '../db/types';
 import {
   calculateVelocityMetrics,

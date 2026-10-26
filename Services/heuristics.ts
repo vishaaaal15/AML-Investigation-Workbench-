@@ -1,5 +1,5 @@
 import { Transaction, Customer, Case } from '../db/types';
-import { db } from '../db/store';
+import { db } from '../server/store.ts';
 
 export interface HeuristicBreakdown {
   overall_score: number;

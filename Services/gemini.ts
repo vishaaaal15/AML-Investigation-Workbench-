@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type } from '@google/genai';
-import { db } from '../db/store';
+import { db } from '../server/store.ts';
 import { AIRun, AIInvestigationReport, AIRunCitation } from '../db/types';
 import { CaseScopedToolRouter } from './tools';
 import { detectCaseHeuristics } from './heuristics';

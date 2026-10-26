@@ -1,5 +1,5 @@
 import PDFDocument from 'pdfkit';
-import { db } from '../db/store';
+import { db } from '../server/store.ts';
 import { detectCaseHeuristics } from './heuristics';
 
 export async function generateCasePdf(caseId: string): Promise<Buffer> {

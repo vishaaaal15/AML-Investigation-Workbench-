@@ -1,4 +1,4 @@
-import { db } from '../db/store';
+import { db } from '../server/store.ts';
 import { EvaluationResult } from '../db/types';
 import { CaseScopedToolRouter } from './tools';
 import { detectCaseHeuristics } from './heuristics';
