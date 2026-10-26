@@ -1,284 +1,258 @@
 # AML Investigation Workbench
 
-> **AI-Assisted Financial Crime Investigation Platform** featuring synthetic transaction analytics, evidence-grounded investigations, case management, and responsible AI controls.
+**Evidence-Grounded AML Investigations | Financial Crime Analytics | Responsible GenAI**
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-19.0-61dafb.svg)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-8.x-646cff.svg)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-4.x-38bdf8.svg)](https://tailwindcss.com/)
-[![Express](https://img.shields.io/badge/Express-4.x-000000.svg)](https://expressjs.com/)
-[![Gemini](https://img.shields.io/badge/Google%20GenAI-gemini--3.8--flash-orange.svg)](https://aistudio.google.com/)
+An independent portfolio project demonstrating how deterministic transaction analytics and AI-assisted investigation workflows can help analysts review synthetic anti-money-laundering (AML) alerts, examine transaction relationships, inspect supporting evidence, and document investigation outcomes.
 
----
+> **Portfolio disclaimer:** This is an educational research prototype using synthetic data. It is not affiliated with or endorsed by Mastercard, SWIFT, any financial institution, or any regulatory authority. It is not intended for real-world financial crime decisions.
 
-## Institutional Disclaimer
+## Project Highlights
 
-> **IMPORTANT NOTICE:**  
-> This project is an **independent, synthetic portfolio and research prototype** created for educational and technical demonstration purposes. It is **not affiliated with, endorsed by, sponsored by, or connected to Mastercard, SWIFT, financial intelligence units (FIUs), or any commercial banking institution**. All customer profiles, transaction records, account identifiers, counterparties, alert rules, and investigation dossiers are entirely synthetic and generated via deterministic algorithms. No real-world customer financial records or bank databases are accessed or utilized.
+- **AML alert triage:** Review prioritized alerts across four synthetic financial crime typologies.
+- **AI-assisted investigations:** Generate structured investigation dossiers using Google Gemini and case-scoped evidence.
+- **Evidence citations:** Validate AI-generated citation identifiers against authorized evidence records.
+- **Transaction network analysis:** Explore customer-to-counterparty relationships and directional transaction flows.
+- **Analyst-controlled decisions:** Require a rationale for supported disposition changes; AI is advisory, not the decision-maker.
+- **Audit and reporting:** Record investigation events and export case dossiers as PDF reports.
+- **Automated evaluations:** Run an 11-check evaluation suite covering integrity, evidence handling, isolation, governance, and other controls.
 
----
+## Application Screenshots
 
-## 1. Project Overview & Problem Statement
+Screenshots below should be captured from the actual running application.
 
-Financial crime compliance teams face immense operational backlogs: anti-money laundering (AML) transaction monitoring systems generate thousands of daily alerts, with false-positive rates frequently exceeding 90%. Anti-Financial Crime (AFC) analysts spend hours manually compiling transaction histories, mapping counterparty relationships, calculating velocity deviations, and writing Suspicious Activity Report (SAR) narratives.
+| Overview Dashboard | Alert Queue |
+|---|---|
+| ![Overview dashboard](docs/screenshots/overview.png) | ![Alert queue](docs/screenshots/alert-queue.png) |
 
-Conversely, attempting to automate investigations with unconstrained large language models introduces severe regulatory and operational risks:
-* **Hallucinated transactions:** Language models fabricating transaction IDs, dates, or dollar amounts.
-* **Information leakage:** Accidental cross-contamination of case records across sensitive customer boundaries.
-* **Autonomous unchecked actions:** Non-deterministic AI models altering case statuses, closing investigations, or submitting regulatory filings without human approval.
-* **Audit trail blindness:** Opaque decision pathways lacking deterministic references to verified evidence.
+| Case Workspace | Transaction Network |
+|---|---|
+| ![Case workspace](docs/screenshots/case-workspace.png) | ![Transaction network](docs/screenshots/network-graph.png) |
 
-### The Solution: Human-in-the-Loop AML Workbench
-The **AML Investigation Workbench** bridges deterministic financial data analytics with verified generative intelligence. It provides compliance analysts with:
-1. **Alert Queue Triage:** Prioritized AML alert monitoring across 4 key financial crime typologies.
-2. **Interactive Transaction Network Forensics:** Visual graph topology highlighting fund layering, hub-and-spoke funnels, and suspicious counterparties.
-3. **Evidence-Grounded AI Dossier:** Structured AI investigation narratives generated by Google Gemini (`gemini-3.8-flash`) restricted to strict, read-only case evidence bundles.
-4. **Mandatory Citation Validation:** Every claim made in the AI investigation is cross-referenced against authorized evidence IDs (`[CUST-xxx]`, `[ALT-xxx]`, `[TX-xxx]`). Unverified claims are automatically flagged.
-5. **Analyst Governance & Audit Immutability:** The AI cannot close cases, modify dispositions, or edit risk levels. Human analysts must provide signed, mandatory rationales for every disposition change, immutably recorded in an append-only audit log.
-6. **One-Click Regulatory PDF Export:** Server-side compilation of complete case dossiers into professional vector PDFs ready for committee review or SAR archiving.
+| Evaluation Results |
+|---|
+| ![Evaluation results](docs/screenshots/evaluations.png) |
 
----
+## The Problem
 
-## 2. Implemented Features
+AML analysts may need to review large volumes of alerts, reconstruct transaction flows, compare customer activity, and document the evidence behind an investigation.
 
-### 🔍 Alert Triage & Case Queue
-* Real-time triage filtering by severity (`CRITICAL`, `HIGH`, `MEDIUM`, `LOW`), priority, status, and typology.
-* One-click escalation of alerts into new or existing investigation cases.
-* Workload distribution across compliance investigators.
+AI can help organize that work, but an unconstrained language model may produce unsupported statements, cite nonexistent records, or cross investigation boundaries.
 
-### 🕸️ Transaction Network Graph
-* Visual node-link topology rendering customer accounts, counterparties, and directional payment corridors.
-* Instant visual identification of high-risk jurisdictions, transaction clustering, and velocity spikes.
+This project explores a more controlled approach: combine deterministic data retrieval and analytics with AI-generated summaries, validate evidence references, and retain human responsibility for investigation outcomes.
 
-### 🤖 Case-Scoped AI Investigation Engine
-* **Model:** Google Gemini (`gemini-3.8-flash`) via the modern `@google/genai` TypeScript SDK.
-* **Structured Output:** Strictly enforced JSON schema via Gemini `Type.OBJECT`, including typology assessment, confidence score, primary suspect profile, suspicious fund flows, behavioral anomalies, and regulatory recommendation.
-* **Strict Single-Turn Repair Loop:** Automatic server-side schema retry and citation verification before surfacing findings to the analyst.
-* **Interactive Citations:** Clicking citation chips in the UI opens slide-out evidence inspectors showing verified source records.
+## Key Features
 
-### 🛡️ Human-in-the-Loop Governance
-* **Read-Only AI Boundaries:** The AI model is strictly prohibited from mutating case records, updating statuses, or closing alerts.
-* **Mandatory Analyst Rationale:** Dispositions (`SAR_RECOMMENDED`, `ESCALATED_FOR_FURTHER_REVIEW`, `CLOSED_FALSE_POSITIVE`, `UNDER_MONITORING`) strictly require analyst rationales before database writes succeed.
-* **Immutable Audit Trail:** Chronological log capturing analyst actions, status transitions, timestamped rationale notes, and AI execution runs.
+### 1. Alert Triage and Case Management
 
-### 📄 Regulatory PDF Dossier Generation
-* Built-in vector PDF generation using `pdfkit`.
-* Includes executive summary, customer background, flagged alert details, transaction table, AI findings, analyst disposition notes, and complete audit history.
+- Review alerts by severity, status, priority, and typology.
+- Explore associated customers and transaction records.
+- Work with existing investigation cases and supported disposition workflows.
 
-### 🧪 Automated Deterministic Evaluation Suite
-* Built-in 11-test verification harness validating state idempotency, referential integrity, cross-case isolation, malicious tool rejection, citation stability, and audit persistence in <100ms.
+### 2. Case-Scoped AI Investigation
 
----
+The backend uses Google's `@google/genai` SDK to request a structured investigation dossier from Gemini.
 
-## 3. Architecture & Data Flow
+The workflow is designed to:
 
+1. Assemble evidence for the selected case.
+2. Provide the model with authorized evidence references.
+3. Request a structured investigation response.
+4. Validate citation identifiers against the evidence index.
+5. Present the result for analyst review.
+
+AI-generated findings are advisory and must not be treated as proof of financial crime.
+
+### 3. Transaction Network Analysis
+
+Explore directional relationships between customers and counterparties to investigate transaction movement, connected entities, and potential layering patterns.
+
+Network relationships are analytical leads, not proof of illicit intent.
+
+### 4. Analyst Governance and Audit Events
+
+- AI investigation tools are designed to be read-only.
+- Supported disposition changes require an analyst-provided rationale.
+- Investigation actions and related events are recorded in an audit history.
+
+The audit implementation is a portfolio demonstration, not a certified tamper-proof regulatory audit system.
+
+### 5. PDF Case Reports
+
+Generate PDF investigation dossiers for review and documentation. Reports can consolidate case context, transaction information, investigation findings, and available audit details.
+
+### 6. Evaluation Suite
+
+The application includes 11 deterministic evaluation checks. In the local test run, all 11 checks passed.
+
+Coverage includes:
+
+1. Duplicate seed prevention and persistence idempotency.
+2. Referential integrity.
+3. Cross-case isolation.
+4. Unauthorized tool invocation rejection.
+5. Read-only AI tool enforcement.
+6. Evidence bundle and citation stability.
+7. Transaction record verification.
+8. Deterministic risk heuristics.
+9. Transaction network relationships.
+10. Mandatory analyst rationale enforcement.
+11. Audit event appending and integrity.
+
+These are application-level checks, not independent security certification or proof of production readiness.
+
+## Synthetic Dataset
+
+The local application is seeded with synthetic records.
+
+| Entity | Records |
+|---|---:|
+| Customers | 500 |
+| Transactions | 5,000 |
+| Alerts | 100 |
+| Cases | 50 |
+
+### Demonstrated AML Typologies
+
+- **Structuring / smurfing:** Transaction patterns involving repeated transfers near configured thresholds.
+- **Rapid movement / layering:** Funds moving through multiple counterparties over short periods.
+- **Shell-company velocity:** Unusual transaction activity associated with synthetic corporate entities.
+- **Jurisdiction spikes:** Changes in synthetic cross-border transaction patterns.
+
+All records are synthetic. The scenarios do not establish that any real person or organization has engaged in financial crime.
+
+## Architecture
+
+```text
+React + TypeScript Frontend
+           |
+           | /api requests
+           v
+      Express Backend
+           |
+           +---- Persistent JSON Store
+           |
+           +---- Case-Scoped Evidence Tools
+           |
+           +---- Gemini Investigation Service
+           |
+           +---- Deterministic Evaluations
+           |
+           +---- PDF Report Generation
 ```
-┌────────────────────────────────────────────────────────────────────────┐
-│                         Browser Client (React 19)                      │
-│                                                                        │
-│   OverviewView  │  AlertQueueView  │  CaseWorkspaceView  │  Evaluations│
-│         ▲                 ▲                  ▲                  ▲      │
-└─────────┼─────────────────┼──────────────────┼──────────────────┼──────┘
-          │ (REST API calls via /api/* proxy)                             
-          ▼                                                              
-┌────────────────────────────────────────────────────────────────────────┐
-│                        Express 4 Backend Server                        │
-│                                                                        │
-│   ├── /api/health                                                      │
-│   ├── /api/cases, /api/alerts, /api/customers                          │
-│   ├── /api/cases/:id/ai-investigate (Gemini Service)                   │
-│   ├── /api/cases/:id/export-pdf     (PDFKit Service)                   │
-│   └── /api/evaluations/run          (Deterministic Test Suite)         │
-└─────────┬──────────────────────┬───────────────────────────────┬───────┘
-          │                      │                               │
-          ▼                      ▼                               ▼
-┌──────────────────┐   ┌──────────────────┐            ┌──────────────────┐
-│  JSON File Store │   │ CaseScoped Router│            │  Google Gemini   │
-│  (server/db/)    │   │ (server/services)│            │  API Service     │
-│                  │   │                  │            │                  │
-│ • Customers (500)│   │ • Strict Bounds  │            │ • Structured     │
-│ • Tx (5,000)     │   │ • Read-Only      │◄───────────┤   JSON Schema    │
-│ • Alerts (100)   │   │ • Citation Index │ (Tool Call)│ • Schema Repair  │
-│ • Cases (50)     │   │ • Anti-Leakage   │            │ • Temp: 0.1      │
-│ • Audit Log      │   └──────────────────┘            └──────────────────┘
-└──────────────────┘
-```
 
-### Data Flow Breakdown
-1. **Case Selection:** Analyst selects an active case (e.g. `CASE-001`).
-2. **Evidence Compilation:** `CaseScopedToolRouter` queries the persistent store, isolating transactions, alerts, and counterparty records anchored strictly to `CASE-001`.
-3. **AI Investigation Request:** Server formats the prompt, injects authorized evidence IDs, and dispatches a structured prompt to `gemini-3.8-flash`.
-4. **Citation Verification:** When the model outputs its response, the server validates every citation ID against the pre-compiled evidence index:
-   * **Valid Citations:** Rendered in the UI as interactive blue tags linking directly to source transactions or alert triggers.
-   * **Invalid / Hallucinated Citations:** Filtered into an `invalid_citations` array, alerting the analyst of ungrounded statements.
-5. **Human Analyst Review:** Analyst inspects the dossier, examines cited transactions, enters their official decision with mandatory rationale, and commits the disposition.
-6. **Audit Recording:** Action is immutably appended to `audit_events` with timestamp, actor name, and rationale.
+### Technology Stack
 
----
+| Layer | Technologies |
+|---|---|
+| Frontend | React 19, TypeScript, Vite 8 |
+| Styling | Tailwind CSS 4 |
+| Backend | Node.js, Express, TypeScript |
+| AI integration | Google GenAI SDK, Gemini |
+| Persistence | Local JSON file store |
+| Reporting | PDFKit |
+| Quality checks | TypeScript checks, production build, application evaluation suite |
 
-## 4. Synthetic Dataset Design & Typologies
-
-The application ships with a deterministic synthetic dataset generated via pseudo-random seeding:
-
-| Dataset Component | Count | Description |
-| :--- | :--- | :--- |
-| **Customers** | **500** | Retail individuals, high-net-worth private wealth, commercial MSMEs, shell entities, and Politically Exposed Persons (PEPs). |
-| **Transactions** | **5,000** | Inflows/outflows across SWIFT, Fedwire, ACH, FasterPayments, and Crypto gateways, with realistic amounts and timestamps. |
-| **AML Alerts** | **100** | Rule-triggered alerts assigned severity, status, and typology. |
-| **Cases** | **50** | Pre-configured investigation cases containing bounded customer and transaction clusters. |
-
-### Implemented AML Typologies
-
-1. **Structuring / Smurfing:**
-   * Rapid sequences of cash deposits or transfers calibrated just below currency reporting thresholds ($9,000 to $9,950) to evade automatic regulatory filings.
-2. **Rapid Movement of Funds (Layering):**
-   * Substantial inbound funds immediately routed to offshore accounts or multiple third parties within <2 hours, leaving near-zero ending balances.
-3. **Shell Company / Velocity Surge:**
-   * Newly formed or previously dormant corporate entities that suddenly process high-volume wire transfers inconsistent with stated business profiles.
-4. **High-Risk Jurisdiction Corridor:**
-   * Sudden spikes in cross-border funds moving to or from FATF-monitored, non-cooperative, or high-secrecy jurisdictions.
-
----
-
-## 5. Technology Stack
-
-### Frontend
-* **React 19** (`react: ^19.0.1`, `react-dom: ^19.0.1`)
-* **Vite 8** (`vite: ^8.3.0`)
-* **Tailwind CSS v4** (`@tailwindcss/vite: ^4.3.3`, `tailwindcss: ^4.3.3`)
-* **Lucide React** (`lucide-react: ^0.546.0`)
-* **Motion** (`motion: ^12.23.24`)
-
-### Backend
-* **Express 4** (`express: ^4.21.2`)
-* **TypeScript** (`typescript: ^7.0.2`, `tsx: ^4.21.0`)
-* **Google GenAI SDK** (`@google/genai: ^2.4.0`)
-* **PDFKit** (`pdfkit: ^0.20.2`, `@types/pdfkit: ^0.17.7`)
-* **Dotenv** (`dotenv: ^17.2.3`)
-
----
-
-## 6. Local Setup & Running Instructions
+## Run Locally on Windows
 
 ### Prerequisites
-* **Node.js**: v18.0.0 or higher (v20+ recommended)
-* **npm**: v9+ or **bun**
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/YOUR_USERNAME/aml-investigation-workbench.git
-cd aml-investigation-workbench
+- Node.js and npm.
+- Git.
+- A Google AI Studio API key if you want to run AI investigations.
+
+### 1. Clone the repository
+
+Replace the repository URL below with the actual public URL of this project.
+
+```cmd
+git clone YOUR_REPOSITORY_URL
+cd AML-Investigation-Workbench-
 ```
 
-### 2. Install Dependencies
-```bash
+### 2. Install dependencies
+
+```cmd
 npm install
 ```
 
-### 3. Configure Environment Variables
-Copy the `.env.example` template to `.env`:
-```bash
-cp .env.example .env
-```
+### 3. Configure the environment
 
-Open `.env` and configure your credentials:
+Create a local `.env` file in the project root. Use `.env.example` as a reference.
+
 ```env
 PORT=3000
-GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE"
+GEMINI_API_KEY=YOUR_PRIVATE_API_KEY
 ```
 
-> **Note on GEMINI_API_KEY:**  
-> You can obtain a free Gemini API key from [Google AI Studio](https://aistudio.google.com/).  
-> If no API key is provided, the platform remains fully functional for case reviews, alert triaging, transaction analytics, network graphs, evaluation tests, and PDF exports. AI investigation runs will display a clear configuration prompt guiding you to supply the key.
+Replace the placeholder locally with your own key. Do not commit `.env`, share your key, or expose it in frontend code.
 
-### 4. Start the Application
-Run the unified dev server (Express backend + Vite frontend):
-```bash
+### 4. Start the backend
+
+Open Command Prompt in the project directory and run:
+
+```cmd
 npm run dev
 ```
 
-The application will be live at:
+Keep this terminal open. The backend listens on port `3000`.
+
+### 5. Start the frontend
+
+Open a second Command Prompt in the same project directory and run:
+
+```cmd
+npx vite --host 127.0.0.1
 ```
-http://localhost:3000
+
+Open the local URL printed by Vite, normally:
+
+```text
+http://127.0.0.1:5173/
 ```
 
----
+The frontend uses the Vite `/api` proxy to communicate with the backend.
 
-## 7. Testing, Evaluation & Verification
+### 6. Verify the production build
 
-### TypeScript Type Checking
-```bash
-npm run lint
-```
-*Executes `tsc --noEmit`. Verified clean with 0 errors.*
-
-### Production Build
-```bash
+```cmd
 npm run build
 ```
-*Builds production assets into `/dist` via Vite.*
 
-### Automated Deterministic Evaluation Suite
-The platform includes an automated 11-test deterministic evaluation harness. You can run it via CLI:
-```bash
-npm test
-```
-Or via the backend HTTP endpoint:
-```bash
-curl -X POST http://localhost:3000/api/evaluations/run
-```
-Or interactively by navigating to the **Evaluations & QA** tab in the web interface.
+The production build has been verified successfully in the development environment used for this project.
 
-### Backup Archive Generation
-Generate clean, production-ready ZIP and TAR.GZ backup archives (excluding secrets, node_modules, and build artifacts):
-```bash
-npm run backup
-```
-Or download directly from a running instance via the UI header button or `GET /api/download-backup`.
+## Security and Responsible AI
 
-#### Evaluation Coverage Summary:
-1. **Duplicate Seed Prevention & Persistence Idempotency:** Verifies dataset integrity across restarts.
-2. **Relational Foreign Key Verification:** Ensures 100% valid cross-table references across 500 customers, 5,000 transactions, 100 alerts, and 50 cases.
-3. **Cross-Case Isolation Boundary:** Validates that `CASE-001` queries attempting to access `CASE-002` are blocked with an explicit security violation.
-4. **Tool Allowlist & Malicious Query Rejection:** Confirms SQL injection attempts and arbitrary execution calls are rejected.
-5. **Read-Only AI Tool Enforcement:** Verifies that AI execution tools cannot write, mutate, or close cases.
-6. **Evidence Bundle Stability:** Confirms compiled bundles contain stable, authorized IDs.
-7. **Deterministic Transaction Matching:** Validates exact amounts, timestamps, and counterparties against the database.
-8. **Deterministic Risk Heuristics Engine:** Validates velocity and deviation scoring formulas.
-9. **Transaction Network Graph Topology:** Verifies connected node-link relationships.
-10. **Analyst Governance Rationale Enforcement:** Verifies that disposition changes without an analyst rationale are rejected.
-11. **Audit Trail Appending & Immutability:** Verifies sequential, unalterable event appending.
+This project demonstrates selected safeguards:
 
----
+- API credentials are intended to remain server-side.
+- Investigation evidence is scoped to a selected case.
+- Citation identifiers are validated against authorized evidence.
+- AI tools are restricted from performing supported case mutations.
+- Analyst dispositions require a rationale.
+- Synthetic data is used instead of real banking records.
 
-## 8. Current Limitations & Storage Architecture
+These safeguards have not been independently certified. A real deployment would require additional threat modeling, authentication, authorization, access controls, monitoring, privacy review, regulatory assessment, and security testing.
 
-* **Storage Engine:** The current repository utilizes a local JSON file database (`data/aml_workbench_db.json`) managed by an atomic, write-queued store (`server/db/store.ts`). This is optimal for self-contained demonstrations and local development without external database dependencies. For enterprise multi-region scaling, migration to PostgreSQL (via Cloud SQL) or Cloud Firestore is supported.
-* **Synthetic Data:** All accounts, transactions, and alerts are synthetically generated. Real compliance deployments require integration with core banking systems (e.g., ISO 20022 / SWIFT MT messages) and sanction screener feeds (OFAC, UN, EU).
-* **Advisory AI Boundaries:** The AI model is strictly informational and advisory. Regulatory compliance standards mandate human decision-making for all SAR filings.
+## Limitations and Future Improvements
 
----
+Potential future work includes:
 
-## 9. User Interface & Screen Reference
+- PostgreSQL-backed persistence and database migrations.
+- Authentication, role-based access controls, and multi-user support.
+- Expanded automated adversarial and regression testing.
+- Improved AI latency, error handling, and investigation traceability.
+- Configurable risk thresholds and analyst feedback.
+- Deployment with secure secrets management and operational monitoring.
 
-*(Screenshots can be added here prior to public release)*
+## Author
 
-* **Overview Dashboard:** High-level metrics, alert velocity charts, priority breakdown, and active case tracker.
-* **Alert Queue View:** Severity-coded alert triage list with multi-parameter filtering and case creation modals.
-* **Case Workspace:** Split-view investigation environment with customer details, transaction ledger, interactive network graph, and AI Dossier tab.
-* **Evidence Inspection Drawer:** Contextual slide-out displaying raw transaction and alert records when clicking citation badges.
-* **Evaluations Suite:** Real-time test dashboard displaying automated test runs, latencies, and pass rates.
+**Vishal Singh**
 
----
+Data Analytics | Financial Crime Analytics | Responsible GenAI
 
-## 10. Security & Responsible Disclosure
+- GitHub: [vishaaaal15](https://github.com/vishaaaal15)
+- LinkedIn: [Vishal Singh](https://www.linkedin.com/in/vishal-singh-analytics/)
 
-* **Zero Client-Side Secrets:** Gemini API keys and sensitive environment variables are strictly managed server-side. No API keys are bundled into frontend assets.
-* **Cross-Case Partitioning:** Evidence queries are rigidly scoped by case ID to eliminate cross-investigation data leakage.
-* **Reporting Security Issues:** If you discover a vulnerability or security risk, please open a private security advisory or contact the repository maintainers directly.
+## License
 
----
-
-## 11. License
-
-This project is licensed under the [MIT License](LICENSE).
+This project uses the MIT License if the repository's `LICENSE` file confirms those terms.
